@@ -2,17 +2,32 @@
 <html lang="en">
 
 <head>
-		<meta charset="utf-8">
-		<title>Sign In – Swipe</title>
-		<meta name="description" content="#">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Bootstrap core CSS -->
-		<link href="dist/css/lib/bootstrap.min.css" type="text/css" rel="stylesheet">
-		<!-- Swipe core CSS -->
-		<link href="dist/css/swipe.min.css" type="text/css" rel="stylesheet">
-		<!-- Favicon -->
-		<link href="dist/img/favicon.png" type="image/png" rel="icon">
+	<meta charset="utf-8">
+	<title>Sign-In (EDSAT)</title>
+	<meta name="description" content="#">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Bootstrap core CSS -->
+	<link href="dist/css/lib/bootstrap.min.css" type="text/css" rel="stylesheet">
+	<!-- Swipe core CSS -->
+	<link href="dist/css/swipe.min.css" type="text/css" rel="stylesheet">
+	<!-- Favicon -->
+	<link href="dist/img/favicon.png" type="image/png" rel="icon">
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+	     https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+
+	<script src="renderer.js"></script>
+
 	</head>
+	
 	<body class="start">
 		<main>
 			<div class="layout">
@@ -22,8 +37,8 @@
 						<div class="container">
 							<div class="col-md-12">
 								<div class="content">
-									<h1>Sign in to Swipe</h1>
-									<div class="third-party">
+									<h1>Sign in to EDSAT</h1>
+									<!-- <div class="third-party">
 										<button class="btn item bg-blue">
 											<i class="material-icons">pages</i>
 										</button>
@@ -33,8 +48,8 @@
 										<button class="btn item bg-purple">
 											<i class="material-icons">whatshot</i>
 										</button>
-									</div>
-									<p>or use your email account:</p>
+									</div> -->
+									<!-- <p>or use your email account:</p> -->
 									<form>
 										<div class="form-group">
 											<input type="email" id="inputEmail" class="form-control" placeholder="Email Address" required>
@@ -44,7 +59,7 @@
 											<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
 											<button class="btn icon"><i class="material-icons">lock_outline</i></button>
 										</div>
-										<button type="submit" class="btn button" formaction="index-2.html">Sign In</button>
+										<button type="button" class="btn button" onclick="signIn()">Sign In</button>
 										<div class="callout">
 											<span>Don't have account? <a href="sign-up.html">Create Account</a></span>
 										</div>
@@ -61,7 +76,7 @@
 						<div class="col-md-12">
 							<div class="preference">
 								<h2>Hello, Friend!</h2>
-								<p>Enter your personal details and start your journey with Swipe today.</p>
+								<p>Enter your personal details and start your journey with EDSAT today.</p>
 								<a href="sign-up.html" class="btn button">Sign Up</a>
 							</div>
 						</div>
@@ -73,10 +88,14 @@
 		<!-- Bootstrap core JavaScript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="dist/js/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="dist/js/jquery-3.3.1.slim.min.js" integrity="" crossorigin="anonymous"></script>
 		<script>window.jQuery || document.write('<script src="dist/js/vendor/jquery-slim.min.js"><\/script>')</script>
 		<script src="dist/js/vendor/popper.min.js"></script>
 		<script src="dist/js/bootstrap.min.js"></script>
+
+
+
+
 	</body>
 
 </html>
