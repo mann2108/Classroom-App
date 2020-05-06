@@ -1,0 +1,46 @@
+users
+    $uid
+        name:
+        type: (student/faculty)
+        email:
+        phoneNo:
+        timestamps:
+        userStatus:offline/online
+rooms
+    $roomId
+        roomOwner: $uid
+        timestamps: 
+
+Members
+    $roomId
+        $userId1
+            timestampsAdded:
+            lastLogin:
+
+Messages
+    $roomId
+        $messageId
+            user:
+            message:
+            timestamps:
+    $fromUserID_toUserID
+        $messageId
+            user:
+            message:
+            timestamps:
+uploads
+    $roomId
+        $dataId
+            user:
+            url:
+            timestamps:
+    $fromUserID_toUserID
+        $dataId
+            user:
+            url:
+            timestamps:
+
+/// Logs for the user activeness analysis
+
+
+
