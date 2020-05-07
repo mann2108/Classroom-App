@@ -2,10 +2,10 @@ organisation:
     $organisation_id
         users
             $uid
-                name:
+                first name:
+                last name:
                 type: (student/faculty)
                 email: (organisation-email)
-                phoneNo:
                 timestamps:
                 userStatus:offline/online
 

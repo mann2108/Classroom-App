@@ -1,5 +1,17 @@
 // Your web app's Firebase configuration
 const { ipcRenderer } = require("electron");
+var firebase = require("firebase/app");
+require("firebase/auth");
+require("firebase/database");
+
+var admin = require("firebase-admin");
+
+var serviceAccount = require("./desktopchatapp-7d77c-firebase-adminsdk-1brzy-0eecc09bae.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://desktopchatapp-7d77c.firebaseio.com",
+});
 
 var firebaseConfig = {
   apiKey: "AIzaSyA2wD-c_irTkrlUYU5ri7TE1IA4nGBdUmo",
@@ -15,7 +27,6 @@ var firebaseConfig = {
 // Initialize Firebase
 
 firebase.initializeApp(firebaseConfig);
-firebase.analytics();
 
 signIn = () => {
   var email = document.getElementById("inputEmail").value;
@@ -56,9 +67,30 @@ signOut = () => {
     });
 };
 
+writeUserData = (userId, firstName, lastName, email) => {
+  firebase
+    .database()
+    .ref("users/" + userId)
+    .set(
+      {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+      },
+      function (error) {
+        if (error) {
+          ipcRenderer.send("message-dialog", "error", error);
+        }
+      }
+    );
+};
+
 signUp = () => {
   var email = document.getElementById("inputEmail").value;
   var password = document.getElementById("inputPassword").value;
+  var firstName = document.getElementById("inputFirstName").value;
+  var lastName = document.getElementById("inputLastName").value;
+  window.flag = false;
   firebase
     .auth()
     .createUserWithEmailAndPassword(email, password)
@@ -68,7 +100,8 @@ signUp = () => {
         .sendEmailVerification()
         .then(function () {
           ipcRenderer.send("message-dialog", "info", "Verification Email Sent");
-          window.location.href = "sign-in.html";
+          window.flag = true;
+          //window.location.href = "sign-in.html";
         })
         .catch(function (error) {
           ipcRenderer.send("message-dialog", "error", "Invalid Email Address");
@@ -77,14 +110,56 @@ signUp = () => {
     .catch(function (error) {
       var errorCode = error.code;
       var errorMessage = error.message;
-      ipcRenderer.send("message-dialog", "error", errorMessage);
+      //ipcRenderer.send("message-dialog", "error", errorMessage);
     });
+  console.log(window.flag);
+
+  //writeUserData(user.uid, firstName, lastName, email);
 };
 
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
-    console.log(user.uid);
   } else {
     // No user is signed in.
   }
 });
+
+// Up to 1000 users can be imported at once.
+
+hello = () => {
+  let userImportRecords = [
+    {
+      uid: "uid6",
+      email: "user6@example.com",
+      passwordHash: Buffer.from("passwordHash1"),
+    },
+    {
+      uid: "uid7",
+      email: "user7@example.com",
+      passwordHash: Buffer.from("passwordHash2"),
+    },
+    //...
+  ];
+  admin
+    .auth()
+    .importUsers([
+      {
+        uid: "mann",
+        displayName: "John Doe",
+        email: "mann@gmail.com",
+        emailVerified: true,
+        // Set this user as admin.
+        password: "mann",
+        customClaims: { admin: true },
+        // User with Google provider.
+      },
+    ])
+    .then(function (results) {
+      results.errors.forEach(function (indexedError) {
+        console.log("Error importing user " + indexedError.index);
+      });
+    })
+    .catch(function (error) {
+      console.log("Error importing users:", error);
+    });
+};
