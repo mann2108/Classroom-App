@@ -3,8 +3,8 @@ const { ipcRenderer } = require("electron");
 var firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
-//const xlsxFile = require('read-excel-file/node');
-var excel = require("excel4node");
+const xlsxFile = require("read-excel-file/node");
+//var excel = require("excel4node");
 var admin = require("firebase-admin");
 
 var serviceAccount = require("./desktopchatapp-7d77c-firebase-adminsdk-1brzy-0eecc09bae.json");
@@ -75,16 +75,16 @@ firebase.auth().onAuthStateChanged(function (user) {
   }
 });
 
-
-writeUserData = (userId, firstName, lastName, email) => {
+writeUserData = (userId, email, name, dateCreated) => {
   firebase
     .database()
     .ref("users/" + userId)
     .set(
       {
-        firstName: firstName,
-        lastName: lastName,
+        name: name,
         email: email,
+        type: "student",
+        dataCreated: dateCreated,
       },
       function (error) {
         if (error) {
@@ -121,17 +121,15 @@ signUp = () => {
       var errorMessage = error.message;
       //ipcRenderer.send("message-dialog", "error", errorMessage);
     });
-  
 
-  setTimeout(function(){ 
-  		console.log(window.flag);
-  		if(window.flag){
-  			var user = firebase.auth().currentUser;
-  			writeUserData(user.uid, firstName, lastName, email); 
-  		}
-  	}, 3000);
+  setTimeout(function () {
+    console.log(window.flag);
+    if (window.flag) {
+      var user = firebase.auth().currentUser;
+      writeUserData(user.uid, firstName, lastName, email);
+    }
+  }, 3000);
 };
-
 
 // Up to 1000 users can be imported at once.
 
@@ -222,3 +220,36 @@ createExcelFile = (nextPageToken) => {
 	
 }
 */
+
+// insertUsersIntoRD = () => {
+//   let std_dateCreated = firebase.database.ServerValue.TIMESTAMP;
+//   xlsxFile("UserData.xlsx").then((rows) => {
+//     let cnt = 0;
+//     for (i in rows) {
+//       let std_email = rows[cnt][0].toString();
+//       let std_uid = rows[cnt][1].toString();
+//       let std_name = rows[cnt][2].toString();
+//       console.log("Email:" + std_email);
+//       console.log("Uid:" + std_uid);
+//       console.log("Name:" + std_name);
+//       writeUserData(std_uid, std_email, std_name, std_dateCreated);
+//       cnt += 1;
+//     }
+//   });
+
+/*firebase
+    .database()
+    .ref("users/" + "1234567890")
+    .set(
+      {
+        Name: "mann",
+        Type: "student",
+        DateCreated: dateCreated,
+      },
+      function (error) {
+        if (error) {
+          ipcRenderer.send("message-dialog", "error", error);
+        }
+      }
+    );*/
+//};

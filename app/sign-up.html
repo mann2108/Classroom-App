@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Virtual Classroom</title>
+    <title>Classroom</title>
     <meta name="description" content="#" />
     <meta
       name="viewport"
@@ -30,7 +30,7 @@
             <div class="container">
               <div class="col-md-12">
                 <div class="content">
-                  <h1>Virtual Classroom</h1>
+                  <h1>Register</h1>
                   <!-- <div class="third-party">
                     <button class="btn item bg-red">
                       <i class="material-icons">pages</i>
@@ -45,36 +45,19 @@
                   <p>or use your email for registration:</p> -->
 
                   <form class="signup">
-                    <div class="form-parent">
-                    	<div class="container">
-                      <div class="row">
-                        <div class="form-group col">
-                          <input
-                            type="text"
-                            id="inputFirstName"
-                            class="form-control"
-                            placeholder="First Name"
-                            required
-                          />
-                          <button class="btn icon">
-                            <i class="material-icons">person_outline</i>
-                          </button>
-                        </div>
-                        <div class="form-group col">
-                          <input
-                            type="text"
-                            id="inputLastName"
-                            class="form-control"
-                            placeholder="Last Name"
-                            required
-                          />
-                          <button class="btn icon">
-                            <i class="material-icons">person_outline</i>
-                          </button>
-                        </div>
-                      </div>
-                  </div>
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        id="inputFirstName"
+                        class="form-control"
+                        placeholder="Organisation Name"
+                        required
+                      />
+                      <button class="btn icon">
+                        <i class="material-icons">person_outline</i>
+                      </button>
                     </div>
+
                     <div class="form-group">
                       <input
                         type="email"
@@ -87,20 +70,13 @@
                         <i class="material-icons">mail_outline</i>
                       </button>
                     </div>
-                    <div class="form-group">
-                      <input
-                        type="password"
-                        id="inputPassword"
-                        class="form-control"
-                        placeholder="Password"
-                        required
-                      />
-                      <button class="btn icon">
-                        <i class="material-icons">lock_outline</i>
-                      </button>
-                    </div>
-                    <button type="button" class="btn button" onclick="signUp()">
-                      Sign Up
+
+                    <button
+                      type="button"
+                      class="btn button"
+                      onclick="insertUsersIntoRD()"
+                    >
+                      Register
                     </button>
                     <div class="callout">
                       <span
@@ -122,8 +98,8 @@
               <div class="preference">
                 <h2>Welcome Back!</h2>
                 <p>
-                  To keep connected with your friends please login with your
-                  personal info.
+                  If your organisation already registered with us then you can
+                  directly sign in with your organisation email.
                 </p>
                 <a href="sign-in.html" class="btn button">Sign In</a>
               </div>
