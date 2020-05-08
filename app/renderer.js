@@ -3,7 +3,8 @@ const { ipcRenderer } = require("electron");
 var firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
-
+//const xlsxFile = require('read-excel-file/node');
+var excel = require("excel4node");
 var admin = require("firebase-admin");
 
 var serviceAccount = require("./desktopchatapp-7d77c-firebase-adminsdk-1brzy-0eecc09bae.json");
@@ -67,6 +68,14 @@ signOut = () => {
     });
 };
 
+firebase.auth().onAuthStateChanged(function (user) {
+  if (user) {
+  } else {
+    // No user is signed in.
+  }
+});
+
+
 writeUserData = (userId, firstName, lastName, email) => {
   firebase
     .database()
@@ -112,54 +121,104 @@ signUp = () => {
       var errorMessage = error.message;
       //ipcRenderer.send("message-dialog", "error", errorMessage);
     });
-  console.log(window.flag);
+  
 
-  //writeUserData(user.uid, firstName, lastName, email);
+  setTimeout(function(){ 
+  		console.log(window.flag);
+  		if(window.flag){
+  			var user = firebase.auth().currentUser;
+  			writeUserData(user.uid, firstName, lastName, email); 
+  		}
+  	}, 3000);
 };
 
-firebase.auth().onAuthStateChanged(function (user) {
-  if (user) {
-  } else {
-    // No user is signed in.
-  }
-});
 
 // Up to 1000 users can be imported at once.
 
-hello = () => {
-  let userImportRecords = [
-    {
-      uid: "uid6",
-      email: "user6@example.com",
-      passwordHash: Buffer.from("passwordHash1"),
-    },
-    {
-      uid: "uid7",
-      email: "user7@example.com",
-      passwordHash: Buffer.from("passwordHash2"),
-    },
-    //...
-  ];
-  admin
-    .auth()
-    .importUsers([
-      {
-        uid: "mann",
-        displayName: "John Doe",
-        email: "mann@gmail.com",
-        emailVerified: true,
-        // Set this user as admin.
-        password: "mann",
-        customClaims: { admin: true },
-        // User with Google provider.
-      },
-    ])
-    .then(function (results) {
-      results.errors.forEach(function (indexedError) {
-        console.log("Error importing user " + indexedError.index);
-      });
-    })
-    .catch(function (error) {
-      console.log("Error importing users:", error);
-    });
+/*
+createSingleUser = (email,password,name) => {
+  admin.auth().createUser({
+  email: email,
+  emailVerified: true,
+  //phoneNumber: '+917621093509',
+  password: password,
+  displayName: name,
+  //photoURL: 'http://www.example.com/12345678/photo.png',
+  disabled: false
+})
+  .then(function(userRecord) {
+    // See the UserRecord reference doc for the contents of userRecord.
+    console.log('Successfully created new user:', userRecord.uid);
+  })
+  .catch(function(error) {
+    console.log('Error creating new user:', error);
+  });
 };
+*/
+
+/*
+ListAllUserAtAuthenticationSection = (nextPageToken) => {
+	// List batch of users, 1000 at a time.
+  	admin.auth().listUsers(1000, nextPageToken).then(function(listUsersResult) {
+  		listUsersResult.users.forEach(function(userRecord) {
+    		console.log('user', userRecord.toJSON());
+  		});
+  		if (listUsersResult.pageToken) {
+    		// List next batch of users.
+    		listAllUsers(listUsersResult.pageToken);
+  		}
+    }).catch(function(error) {
+      	console.log('Error listing users:', error);
+    });
+}
+*/
+
+/*
+AdddingUserIntoAthenticationSection = () => {
+    // 2019_20_Even_sem_Unit_Test_data
+	var temp = "@charusat.edu.in";
+	xlsxFile('./app/2019_20_Even_sem_Unit_Test_data.xlsx').then((rows) => {
+		for (i in rows){
+			email = "17it051@charusat.edu.in";
+			id = "17it051";
+			name = "MEHTA MANN RAHULKUMAR";
+       		createSingleUser(email,id.toLowerCase(),name);
+   		}
+	});
+}
+*/
+// Fetching user authenticated data from the firebase
+/*
+createExcelFile = (nextPageToken) => {
+	var workbook = new excel.Workbook();
+	var worksheet = workbook.addWorksheet('17IT');
+
+	worksheet.cell(1,1).string('EMAIL');
+	worksheet.cell(1,2).string('UID');
+	worksheet.cell(1,3).string('NAME');
+	var cnt = 1;
+
+
+
+	admin.auth().listUsers(1000, nextPageToken).then(function(listUsersResult) {
+  		listUsersResult.users.forEach(function(userRecord) {
+  			cnt++;
+  			var userRecordJsonObject = userRecord.toJSON();
+    		//console.log(cnt, userRecord.toJSON());
+    		worksheet.cell(cnt,1).string(userRecordJsonObject.email);
+    		worksheet.cell(cnt,2).string(userRecordJsonObject.uid);
+    		worksheet.cell(cnt,3).string(userRecordJsonObject.displayName);
+
+  		});
+  		if (listUsersResult.pageToken) {
+    		// List next batch of users.
+    		createExcelFile(listUsersResult.pageToken);
+  		}
+    }).catch(function(error) {
+      	console.log('Error listing users:', error);
+    });
+
+    setTimeout(function(){ workbook.write('UserData.xlsx'); }, 3000);
+	
+}
+*/

@@ -1,31 +1,49 @@
+users
+    $userId
+        organisation: $organisationId
+        type: Admin/Faculty/Student
+        timeStamp:
+
 organisation:
-    $organisation_id
-        users
-            $uid
+    
+    $organisationId
+        
+        organisationName:
+        timestamp:
+
+        admin
+            $userId
+                adminName:
+                email:
+                timeStamp:
+
+        students
+            $suserId
+                studentEnrollmentNo:
                 first name:
                 last name:
-                type: (student/faculty)
                 email: (organisation-email)
                 timestamps:
                 userStatus:offline/online
 
-                friends:
-                    $friend_uid
+                rooms:
+                    $room_id
+
+        faculty
+            $facultyUid
+                first name:
+                last name:
+                email: (organisation-email)
+                timestamps:
+                userStatus:offline/online
 
                 rooms:
                     $room_id
 
-                friend_request:
-                    $friend_uid
-
-                rooms_request:
-                    $room_id
-
-
 
         rooms (only created by faculty)
             $roomId
-                roomOwner: $uid
+                roomOwner: $facultyuid
                 timestamps: 
 
         Members
