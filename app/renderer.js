@@ -3,11 +3,13 @@ const { ipcRenderer } = require("electron");
 var firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
-const xlsxFile = require("read-excel-file/node");
-var excel = require("excel4node");
-var admin = require("firebase-admin");
+//const xlsxFile = require("read-excel-file/node");
+//var excel = require("excel4node");
+//var admin = require("firebase-admin");
 
 var serviceAccount = require("./desktopchatapp-7d77c-firebase-adminsdk-1brzy-0eecc09bae.json");
+
+var loginUser;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -188,7 +190,6 @@ ListAllUserAtAuthenticationSection = (nextPageToken) => {
 }*/
 
 // Fetching user authenticated data from the firebase
-
 // createExcelFile = (nextPageToken) => {
 // 	var workbook = new excel.Workbook();
 // 	var worksheet = workbook.addWorksheet('17IT_Faculty');
@@ -198,7 +199,6 @@ ListAllUserAtAuthenticationSection = (nextPageToken) => {
 // 	var cnt = 1;
 // 	admin.auth().listUsers(1000, nextPageToken).then(function(listUsersResult) {
 //   		listUsersResult.users.forEach(function(userRecord) {
-  			
 //   			var userRecordJsonObject = userRecord.toJSON();
 //   			var email = userRecordJsonObject.email;
 //   			if(email[email.length-4]=='c'){
@@ -208,7 +208,6 @@ ListAllUserAtAuthenticationSection = (nextPageToken) => {
 //     			worksheet.cell(cnt,2).string(userRecordJsonObject.uid);
 //     			worksheet.cell(cnt,3).string(userRecordJsonObject.displayName);
 //   			}
-
 //   		});
 //   		if (listUsersResult.pageToken) {
 //     		// List next batch of users.
@@ -219,7 +218,6 @@ ListAllUserAtAuthenticationSection = (nextPageToken) => {
 //     });
 //     setTimeout(function(){ workbook.write('UserData2.xlsx'); }, 5000);
 // }
-
 
 insertUsersIntoRD = () => {
   let std_dateCreated = firebase.database.ServerValue.TIMESTAMP;
@@ -253,15 +251,35 @@ insertUsersIntoRD = () => {
     );*/
 //};
 
+defaultLoadings = ()  => {
+	if(!loginUser){
+		window.location.href = "sign-in.html";
+		ipcRenderer.send("message-dialog", "error", "Connection Time Out");
+	}
+	document.getElementById("name").innerHTML = loginUser.displayName;
+	document.getElementById("email").innerHTML = loginUser.email;
+	document.getElementById("type").innerHTML = "STUDENT";
+	if(loginUser.email[loginUser.email.length-4]=='c'){
+		document.getElementById("type").innerHTML = "FACULTY";	
+	}
+	document.getElementById("lastLogin").innerHTML = loginUser.metadata.lastSignInTime;
+}
+
 initialize = () => {
 	firebase.auth().onAuthStateChanged(function(user) {
 		if (user) {
-    		//ipcRenderer.send("message-dialog", "info", user.email);
-    		document.getElementById("email").value = user.email;
-  		} else {
-    		// No user is signed in.
-  		}
+			loginUser = user;
+		}
 	});
+	setTimeout(function(){
+		var user = firebase.auth().currentUser;
+		loginUser = user;
+		defaultLoadings();
+	}, 2000);
 }
+
+
+
+
 
 

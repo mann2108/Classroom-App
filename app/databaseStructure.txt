@@ -1,81 +1,34 @@
 users
     $userId
-        organisation: $organisationId
         type: Admin/Faculty/Student
-        timeStamp:
+        email:
+        name:
+        dateCreated:
+        mychat
+            $hashCode:
+                dateCreated:
+                message:
 
-organisation:
-    
-    $organisationId
-        
-        organisationName:
-        timestamp:
+rooms
+    $roomId
+        roomOwner: $facultyuid
+        dateCreated:
 
-        admin
-            $userId
-                adminName:
-                email:
-                timeStamp:
+userRoomsDetails:
+    $userId:
+        roomsList:
+            $hashCode:
+                roomId: $rooId
 
-        students
-            $suserId
-                studentEnrollmentNo:
-                first name:
-                last name:
-                email: (organisation-email)
-                timestamps:
-                userStatus:offline/online
+Members
+    $roomId
+        $userId1
+            dateAdded:
+            lastLogin:
 
-                rooms:
-                    $room_id
-
-        faculty
-            $facultyUid
-                first name:
-                last name:
-                email: (organisation-email)
-                timestamps:
-                userStatus:offline/online
-
-                rooms:
-                    $room_id
-
-
-        rooms (only created by faculty)
-            $roomId
-                roomOwner: $facultyuid
-                timestamps: 
-
-        Members
-            $roomId
-                $userId1
-                    timestampsAdded:
-                    lastLogin:
-
-        Messages
-            $roomId
-                $messageId
-                    user:
-                    message:
-                    timestamps:
-            $fromUserID_toUserID
-                $messageId
-                    user:
-                    message:
-                    timestamps:
-        uploads
-            $roomId
-                $dataId
-                    user:
-                    url:
-                    timestamps:
-            $fromUserID_toUserID
-                $dataId
-                    user:
-                    url:
-                    timestamps:
-
-        /// Logs for the user activeness analysis
-
-
-
+Messages
+    $roomId
+        $messageId
+            user:
+            message:
+            timestamps:
