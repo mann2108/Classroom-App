@@ -4,31 +4,30 @@ users
         email:
         name:
         dateCreated:
-        mychat
-            $hashCode:
-                dateCreated:
-                message:
 
 rooms
     $roomId
-        roomOwner: $facultyuid
+        roomOwner: $facultyId
         dateCreated:
 
 userRoomsDetails:
     $userId:
         roomsList:
             $hashCode:
-                roomId: $rooId
-
+                roomId: $roomId
 Members
     $roomId
         $userId1
             dateAdded:
             lastLogin:
-
 Messages
     $roomId
         $messageId
-            user:
+            user: $userId
+            message:
+            timestamps:
+    $userId
+        $messageId
+            user: $userId
             message:
             timestamps:
