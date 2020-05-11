@@ -1,31 +1,29 @@
 users
-    $userId
-        type: Admin/Faculty/Student
-        email:
-        name:
-        dateCreated:
+	$userId
+    	type: Admin/Faculty/Student
+    	email:
+    	name:
+    	dateCreated:
+    	status: (online/offline)
+    	roomsList:
+        	$hashCode:
+            	roomId: $roomId
 
 rooms
     $roomId
-        roomOwner: $facultyId
+    	roomOwner: $facultyId
         dateCreated:
 
-userRoomsDetails:
-    $userId:
-        roomsList:
-            $hashCode:
-                roomId: $roomId
-Members
-    $roomId
-        $userId1
-            dateAdded:
-            lastLogin:
-Messages
-    $roomId
-        $messageId
-            user: $userId
-            message:
-            timestamps:
+    	Members
+        	$userId1
+            	dateAdded:
+
+		Messages
+        	$messageId
+            	user: $userId
+            	message:
+            	timestamps:
+
     $userId
         $messageId
             user: $userId
