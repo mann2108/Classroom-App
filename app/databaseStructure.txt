@@ -4,7 +4,7 @@ users
     	email:
     	name:
     	dateCreated:
-    	status: (online/offline)
+    	//status: (online/offline)
     	roomsList:
         	$hashCode:
             	roomId: $roomId
@@ -13,6 +13,7 @@ rooms
     $roomId
     	roomOwner: $facultyId
         dateCreated:
+        roomName:
 
     	Members
         	$userId1
@@ -20,12 +21,6 @@ rooms
 
 		Messages
         	$messageId
-            	user: $userId
+            	sender: $userId
             	message:
             	timestamps:
-
-    $userId
-        $messageId
-            user: $userId
-            message:
-            timestamps:

@@ -173,18 +173,31 @@ insertUsersIntoRD = () => {
   });
 }
 
-firebase
-    .database()
-    .ref("users/" + "1234567890")
-    .set(
-      {
-        Name: "mann",
-        Type: "student",
-        DateCreated: dateCreated,
-      },
-      function (error) {
-        if (error) {
-          ipcRenderer.send("message-dialog", "error", error);
-        }
+writeUserData2 = (userId,dateCreated) => {
+  var updates = {};
+  updates['rooms/'+userId] = {
+    roomOwner : userId,
+    dateCreated: dateCreated,
+    members: {
+      [userId]: {
+        dateCreated: dateCreated
       }
-    );
+    }
+  };
+
+  firebase
+    .database()
+    .ref().update(updates);
+};
+sendMessage = () => {
+  let std_dateCreated = firebase.database.ServerValue.TIMESTAMP;
+  xlsxFile("UserData.xlsx").then((rows) => {
+    let cnt = 0;
+    for (i in rows) {
+      let std_uid = rows[cnt][1].toString();
+      console.log("Email:" + std_uid);
+      writeUserData2(std_uid,std_dateCreated);
+      cnt += 1;
+    }
+  });
+}

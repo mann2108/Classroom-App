@@ -3,13 +3,14 @@ const { ipcRenderer } = require("electron");
 var firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
-//const xlsxFile = require("read-excel-file/node");
+const xlsxFile = require("read-excel-file/node");
 //var excel = require("excel4node");
 //var admin = require("firebase-admin");
 
 //var serviceAccount = require("./desktopchatapp-7d77c-firebase-adminsdk-1brzy-0eecc09bae.json");
 
 var loginUser;
+var currentChatId;
 
 /*admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -77,13 +78,21 @@ firebase.auth().onAuthStateChanged(function (user) {
   }
 });
 
-
+chatName = () => {
+  firebase.database().ref('rooms/' + currentChatId+"/").once('value').then(function(snapshot) {
+  var roomName2 = snapshot.val().roomName;
+});
+  
+}
 defaultLoadings = ()  => {
 	if(!loginUser){
 		window.location.href = "sign-in.html";
 		ipcRenderer.send("message-dialog", "error", "Connection Time Out");
 	}
-	document.getElementById("name").innerHTML = loginUser.displayName;
+	document.getElementsByClassName("loginPerson")[0].innerHTML = loginUser.displayName;
+  document.getElementsByClassName("loginPerson")[1].innerHTML = loginUser.displayName;
+  document.getElementById("currentChatName").innerHTML = chatName();
+  currentChatId = loginUser.uid;
 	document.getElementById("email").innerHTML = loginUser.email;
 	document.getElementById("type").innerHTML = "STUDENT";
 	if(loginUser.email[loginUser.email.length-4]=='c'){
@@ -103,4 +112,30 @@ initialize = () => {
 		loginUser = user;
 		defaultLoadings();
 	}, 2000);
+}
+
+// sendMessage = () => {
+//   var message = document.getElementById("message").value;
+//   var messageId = firebase.database().ref().child('rooms/'+currentChatId).push().key;
+//   let std_dateCreated = firebase.database.ServerValue.TIMESTAMP;
+//   firebase
+//     .database()
+//     .ref("rooms/"+currentChatId+"/messages/"+messageId)
+//     .set(
+//       {
+//         sender: loginUser.uid,
+//         message: message,
+//         DateCreated: std_dateCreated,
+//       },
+//       function (error) {
+//         if (error) {
+//           ipcRenderer.send("message-dialog", "error", error);
+//         }
+//       }
+//     ); 
+//   //console.log(messageId);
+// }
+
+sendMessage = () => {
+  
 }
