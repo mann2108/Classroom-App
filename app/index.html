@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 		<meta charset="utf-8">
-		<title>Swipe – The Simplest Chat Platform</title>
+		<title>Class Room Application</title>
 		<meta name="description" content="#">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<!-- Bootstrap core CSS -->
@@ -23,7 +24,6 @@
 							<div class="nav nav-tab menu">
 								<button class="btn"><img class="avatar-xl" src="dist/img/avatars/avatar-male-1.jpg" alt="avatar"></button>
 								<a href="#discussions" data-toggle="tab" class="active"><i class="material-icons active">chat_bubble_outline</i></a>
-								<!-- <button class="btn mode"><i class="material-icons">brightness_2</i></button> -->
 								<a href="#settings" data-toggle="tab"><i class="material-icons">settings</i></a>
 								<button class="btn power" onclick="signOut();"><i class="material-icons">power_settings_new</i></button>
 							</div>
@@ -48,20 +48,6 @@
 									<div class="discussions">
 										<h1>Classrooms</h1>
 										<div class="list-group" id="chats" role="tablist">
-											<a href="#list-chat" class="filterDiscussions all unread single active" id="list-chat-list" data-toggle="list" role="tab">
-												<img class="avatar-md" src="dist/img/avatars/avatar-female-1.jpg" data-toggle="tooltip" data-placement="top" title="Janette" alt="avatar">
-												<div class="status">
-													<i class="material-icons online">fiber_manual_record</i>
-												</div>
-												<div class="new bg-yellow">
-													<span>+7</span>
-												</div>
-												<div class="data">
-													<h5>Janette Dalton</h5>
-													<span>Mon</span>
-													<p>A new feature has been updated to your account. Check it out...</p>
-												</div>
-											</a>									
 										</div>
 									</div>
 								</div>
@@ -140,35 +126,26 @@
 					</div>
 				</div>
 				<!-- End of Sidebar -->
-				
 				<!-- Start of Create Chat -->
 				<div class="modal fade" id="startnewchat" tabindex="-1" role="dialog" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="requests">
 							<div class="title">
-								<h1>Start new chat</h1>
+								<h1>Create Room</h1>
 								<button type="button" class="btn" data-dismiss="modal" aria-label="Close"><i class="material-icons">close</i></button>
 							</div>
 							<div class="content">
 								<form>
 									<div class="form-group">
 										<label for="participant">Recipient:</label>
-										<input type="text" class="form-control" id="participant" placeholder="Add recipient..." required>
-										<div class="user" id="recipient">
-											<img class="avatar-sm" src="dist/img/avatars/avatar-female-5.jpg" alt="avatar">
-											<h5>Keith Morris</h5>
-											<button class="btn"><i class="material-icons">close</i></button>
-										</div>
+										<select id="selectMembers" class="form-control" size="10" multiple style="height:200px;">
+										</select>
 									</div>
 									<div class="form-group">
-										<label for="topic">Topic:</label>
-										<input type="text" class="form-control" id="topic" placeholder="What's the topic?" required>
+										<label for="topic">Room Name:</label>
+										<input type="text" class="form-control" id="roomName" placeholder="What's the topic?" required>
 									</div>
-									<div class="form-group">
-										<label for="message">Message:</label>
-										<textarea class="text-control" id="message2" placeholder="Send your welcome message...">Hmm, are you friendly?</textarea>
-									</div>
-									<button type="submit" class="btn button w-100">Start New Chat</button>
+									<button type="button" onclick="createRoom()" class="btn button w-100">Create Room</button>
 								</form>
 							</div>
 						</div>
@@ -197,7 +174,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="content empty" id="checkEmptyChat" style="display:none;">
+								<div class="content empty" id="checkEmptyChat">
 									<div class="container">
 										<div class="col-md-12">
 											<div class="no-messages">
@@ -209,8 +186,8 @@
 								</div>
 								<div class="content" id="content">
 									<div class="container">
-										<div class="col-md-12">
-											<div class="message">
+										<div class="col-md-12" id="addMessagesHere">
+											<!-- <div class="message">
 												<img class="avatar-md" src="dist/img/avatars/avatar-female-5.jpg" data-toggle="tooltip" data-placement="top" title="Keith" alt="avatar">
 												<div class="text-main">
 													<div class="text-group">
@@ -261,7 +238,7 @@
 														</div>
 													</div>
 												</div>
-											</div>
+											</div> -->
 
 										</div>
 									</div>
@@ -298,10 +275,23 @@
 		<script src="dist/js/swipe.min.js"></script>
 		<script src="dist/js/bootstrap.min.js"></script>
 		<script>
-			function scrollToBottom(el) { el.scrollTop = el.scrollHeight; }
+
+			function scrollToBottom(el) {
+				if(el){
+					el.scrollTop = el.scrollHeight; 
+				} 
+			}
 			scrollToBottom(document.getElementById('content'));
 		</script>
+
 	</body>
 
 
 </html>
+
+
+
+
+<!-- <div class="message"><img class="avatar-md" src="dist/img/avatars/avatar-female-5.jpg" data-toggle="tooltip" data-placement="top" title="Keith" alt="avatar"><div class="text-main"><div class="text-group"><div class="text"><p>We've got some killer ideas kicking about already.</p></div></div><span>09:46 AM</span></div></div> -->
+
+<!-- <div class="message me"><div class="text-main"><div class="text-group me"><div class="text me"><p>Can't wait! How are we coming along with the client?</p></div></div><span>11:32 AM</span></div></div> -->

@@ -4,10 +4,12 @@ users
     	email:
     	name:
     	dateCreated:
-    	//status: (online/offline)
+    	status: (online/offline)
+        uid: 
     	roomsList:
         	$hashCode:
             	roomId: $roomId
+                roomName: 
 
 rooms
     $roomId
@@ -16,11 +18,13 @@ rooms
         roomName:
 
     	Members
-        	$userId1
+        	$hashId
+                userId: $userId
             	dateAdded:
 
 		Messages
         	$messageId
             	sender: $userId
+                senderName: 
             	message:
             	timestamps:

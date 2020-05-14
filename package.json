@@ -23,6 +23,9 @@
 		"excel4node": "^1.7.2",
 		"firebase": "^7.14.2",
 		"firebase-admin": "^8.12.0",
+		"jquery": "^3.5.1",
+		"jquery-ui": "^1.12.1",
 		"read-excel-file": "^4.0.6"
-	}
+	},
+	"dependencies": {}
 }

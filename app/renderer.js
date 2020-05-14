@@ -1,3 +1,4 @@
+
 // Your web app's Firebase configuration
 const { ipcRenderer } = require("electron");
 var firebase = require("firebase/app");
@@ -5,17 +6,19 @@ require("firebase/auth");
 require("firebase/database");
 const xlsxFile = require("read-excel-file/node");
 //var excel = require("excel4node");
-//var admin = require("firebase-admin");
+var admin = require("firebase-admin");
 
-//var serviceAccount = require("./desktopchatapp-7d77c-firebase-adminsdk-1brzy-0eecc09bae.json");
+var serviceAccount = require("./desktopchatapp-7d77c-firebase-adminsdk-1brzy-7e7ee7b250.json");
 
 var loginUser;
 var currentChatId;
-
-/*admin.initializeApp({
+var currentChatName="Please Select Room";
+var allUsers = [];
+var allUserEmail = [];
+admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://desktopchatapp-7d77c.firebaseio.com",
-});*/
+});
 
 var firebaseConfig = {
   apiKey: "AIzaSyA2wD-c_irTkrlUYU5ri7TE1IA4nGBdUmo",
@@ -71,19 +74,30 @@ signOut = () => {
     });
 };
 
-firebase.auth().onAuthStateChanged(function (user) {
-  if (user) {
-  } else {
-    // No user is signed in.
-  }
-});
 
-chatName = () => {
-  firebase.database().ref('rooms/' + currentChatId+"/").once('value').then(function(snapshot) {
-  var roomName2 = snapshot.val().roomName;
-});
-  
+activateRoom = (room_name,room_id) => {
+  document.getElementById("checkEmptyChat").style.display = "block";
+      document.getElementById("content").style.display = "none";
+  document.getElementById("addMessagesHere").innerHTML="";
+	currentChatId = room_id;
+	currentChatName = room_name;
+  document.getElementById("currentChatName").innerHTML = currentChatName;
+
+  firebase.database().ref("rooms/"+currentChatId+"/messages").on("child_added", function(snapshot, prevChildKey){
+      document.getElementById("checkEmptyChat").style.display = "none";
+      document.getElementById("content").style.display = "block";
+      var newMessage = snapshot.val();
+      var dateAdded = new Date(newMessage.DateCreated);
+      dateAddedString = dateAdded.toGMTString();
+      if(newMessage.senderId == loginUser.uid){
+          document.getElementById("addMessagesHere").innerHTML+="<div class=\"message me\"><div class=\"text-main\"><div class=\"text-group me\"><div class=\"text me\"><p>"+newMessage.message+"</p></div></div><span>"+dateAddedString+"</span></div></div>";
+      }
+      else{
+        document.getElementById("addMessagesHere").innerHTML+="<div class=\"message\"><img class=\"avatar-md\" src=\"dist/img/avatars/avatar-female-5.jpg\" data-toggle=\"tooltip\" data-placement=\"top\" title='"+newMessage.senderName+"' alt=\"avatar\"><div class=\"text-main\"><div class=\"text-group\"><div class=\"text\"><p>"+newMessage.message+"</p></div></div><span>"+dateAddedString+"</span></div></div>";
+      }
+    });
 }
+
 defaultLoadings = ()  => {
 	if(!loginUser){
 		window.location.href = "sign-in.html";
@@ -91,14 +105,25 @@ defaultLoadings = ()  => {
 	}
 	document.getElementsByClassName("loginPerson")[0].innerHTML = loginUser.displayName;
   document.getElementsByClassName("loginPerson")[1].innerHTML = loginUser.displayName;
-  document.getElementById("currentChatName").innerHTML = chatName();
-  currentChatId = loginUser.uid;
+  //currentChatId = loginUser.uid;
+  document.getElementById("currentChatName").innerHTML = currentChatName;
 	document.getElementById("email").innerHTML = loginUser.email;
 	document.getElementById("type").innerHTML = "STUDENT";
 	if(loginUser.email[loginUser.email.length-4]=='c'){
 		document.getElementById("type").innerHTML = "FACULTY";	
 	}
 	document.getElementById("lastLogin").innerHTML = loginUser.metadata.lastSignInTime;
+}
+
+function GetSortOrder(prop) {    
+    return function(a, b) {    
+        if (a[prop] > b[prop]) {    
+            return 1;    
+        } else if (a[prop] < b[prop]) {    
+            return -1;    
+        }    
+        return 0;    
+    }    
 }
 
 initialize = () => {
@@ -111,31 +136,114 @@ initialize = () => {
 		var user = firebase.auth().currentUser;
 		loginUser = user;
 		defaultLoadings();
-	}, 2000);
-}
 
-// sendMessage = () => {
-//   var message = document.getElementById("message").value;
-//   var messageId = firebase.database().ref().child('rooms/'+currentChatId).push().key;
-//   let std_dateCreated = firebase.database.ServerValue.TIMESTAMP;
-//   firebase
-//     .database()
-//     .ref("rooms/"+currentChatId+"/messages/"+messageId)
-//     .set(
-//       {
-//         sender: loginUser.uid,
-//         message: message,
-//         DateCreated: std_dateCreated,
-//       },
-//       function (error) {
-//         if (error) {
-//           ipcRenderer.send("message-dialog", "error", error);
-//         }
-//       }
-//     ); 
-//   //console.log(messageId);
-// }
+
+    firebase.database().ref("user/"+loginUser.uid+"/roomList").on("child_added", function(snapshot, prevChildKey){
+      var newRoom = snapshot.val();
+      var string_1 = "<a href='#list-chat' onclick=\"activateRoom('"+newRoom.roomName+"','"+newRoom.roomId;
+      var string_2 = "')\" class='filterDiscussions all unread single active' id='list-chat-list' data-toggle='list' role='tab'><img class='avatar-md' src='dist/img/avatars/avatar-female-1.jpg' data-toggle='tooltip' data-placement='top' title='classroom' alt='avatar'><div class='status'><i class='material-icons online'>fiber_manual_record</i></div><div class='data'><h5>"+newRoom.roomName+"</h5></div></a>"
+      var final = string_1+string_2;
+      document.getElementById('chats').innerHTML+=final;
+    });
+
+	}, 5000);
+
+  firebase.database().ref("user/").once("value", function(snapshot){
+    snapshot.forEach(function(child){
+      //console.log(child.val());
+      allUsers.push({
+        uid: child.val().uid,
+        email : child.val().email,
+      });
+      allUserEmail.push(child.val().email);
+    });
+  }); 
+
+  setTimeout(function(){
+    allUsers.sort(GetSortOrder("email"));
+    //console.log(allUsers);
+    var ddl = document.getElementById("selectMembers");
+    for(var i=0; i<allUsers.length; i++) {
+      if(allUsers[i].uid==loginUser.uid)continue;
+      var option = document.createElement("OPTION");
+      option.innerHTML = allUsers[i].email;
+      option.value = allUsers[i].uid;
+      ddl.options.add(option);  
+    }
+  }, 5000);
+}
 
 sendMessage = () => {
-  
+  var message = document.getElementById("message").value;
+  var messageId = firebase.database().ref().child('rooms/'+currentChatId).push().key;
+  let std_dateCreated = firebase.database.ServerValue.TIMESTAMP;
+  firebase
+    .database()
+    .ref("rooms/"+currentChatId+"/messages/"+messageId)
+    .set(
+      {
+        senderId: loginUser.uid,
+        senderName: loginUser.displayName,
+        message: message,
+        DateCreated: std_dateCreated,
+      },
+      function (error) {
+        if (error) {
+          ipcRenderer.send("message-dialog", "error", error);
+        }
+      }
+    );
 }
+
+createRoom = () => {
+  var selected = [];
+  var object = {};
+  for (var option of document.getElementById("selectMembers").options){
+    if(option.selected){
+      selected.push(option.value);
+    }
+  }
+  selected.push(loginUser.uid);
+
+  var roomId = firebase.database().ref().child('rooms/').push().key;
+  var roomOwner = loginUser.uid;
+  var dateCreated = firebase.database.ServerValue.TIMESTAMP;
+  var roomName = document.getElementById("roomName").value;
+
+  firebase
+    .database()
+    .ref("rooms/"+roomId).set({
+      roomOwner: roomOwner,
+      dateCreated: dateCreated,
+      roomName: roomName,
+    });
+
+  for(var i=0;i<selected.length;i++){
+    //console.log(selected[i]);
+    firebase
+    .database()
+    .ref("rooms/"+roomId+"/members")
+    .push()
+    .set({
+      userId: selected[i],
+      dateCreated: dateCreated 
+    });
+
+    firebase
+    .database()
+    .ref("user/"+selected[i]+"/roomList")
+    .push()
+    .set({
+      roomId: roomId,
+      roomName: roomName 
+    });
+  }
+} 
+
+firebase.auth().onAuthStateChanged(function (user) {
+  if (user) {
+  } else {
+    // No user is signed in.
+  }
+});
+

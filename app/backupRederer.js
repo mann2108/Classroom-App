@@ -173,30 +173,34 @@ insertUsersIntoRD = () => {
   });
 }
 
-writeUserData2 = (userId,dateCreated) => {
-  var updates = {};
-  updates['rooms/'+userId] = {
-    roomOwner : userId,
-    dateCreated: dateCreated,
-    members: {
-      [userId]: {
-        dateCreated: dateCreated
-      }
-    }
-  };
-
-  firebase
+writeUserData2 = (userId,email,name,dateCreated) => {
+  var newKey = admin.database().ref().child('users/'+userId).push().key;
+  admin
     .database()
-    .ref().update(updates);
+    .ref("users/"+userId).set({
+    	type: "faculty",
+    	email: email,
+    	name: name,
+    	dateCreated: dateCreated,
+    	status: "offline",
+    	roomList:{
+    		[newKey]:{
+    			roomId :userId,
+    			roomName: "Me"
+    		}
+    	}
+    });
 };
 sendMessage = () => {
   let std_dateCreated = firebase.database.ServerValue.TIMESTAMP;
-  xlsxFile("UserData.xlsx").then((rows) => {
+  xlsxFile("FacultyData.xlsx").then((rows) => {
     let cnt = 0;
     for (i in rows) {
+      let std_email = rows[cnt][0].toString(); 
       let std_uid = rows[cnt][1].toString();
+      let std_name = rows[cnt][2].toString();
       console.log("Email:" + std_uid);
-      writeUserData2(std_uid,std_dateCreated);
+      writeUserData2(std_uid,std_email,std_name,std_dateCreated);
       cnt += 1;
     }
   });
