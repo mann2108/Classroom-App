@@ -19,6 +19,7 @@
 	"devDependencies": {
 		"@firebase/analytics": "^0.3.3",
 		"electron": "^3.0.4",
+		"electron-online": "^1.0.0",
 		"electron-reload": "^1.2.5",
 		"excel4node": "^1.7.2",
 		"firebase": "^7.14.2",

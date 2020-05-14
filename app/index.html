@@ -1,297 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-		<meta charset="utf-8">
-		<title>Class Room Application</title>
-		<meta name="description" content="#">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Bootstrap core CSS -->
-		<link href="dist/css/lib/bootstrap.min.css" type="text/css" rel="stylesheet">
-		<!-- Swipe core CSS -->
-		<link href="dist/css/swipe.min.css" type="text/css" rel="stylesheet">
-		<!-- Favicon -->
-		<link href="dist/img/favicon.png" type="image/png" rel="icon">
-		<script src="renderer.js"></script>
-	</head>
-	<body onload = "initialize()">
-		<main>
-			<div class="layout">
-				<!-- Start of Navigation -->
-				<div class="navigation">
-					<div class="container">
-						<div class="inside">
-							<div class="nav nav-tab menu">
-								<button class="btn"><img class="avatar-xl" src="dist/img/avatars/avatar-male-1.jpg" alt="avatar"></button>
-								<a href="#discussions" data-toggle="tab" class="active"><i class="material-icons active">chat_bubble_outline</i></a>
-								<a href="#settings" data-toggle="tab"><i class="material-icons">settings</i></a>
-								<button class="btn power" onclick="signOut();"><i class="material-icons">power_settings_new</i></button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- End of Navigation -->
-				<!-- Start of Sidebar -->
-				<div class="sidebar" id="sidebar">
-					<div class="container">
-						<div class="col-md-12">
-							<div class="tab-content">
-								<!-- Start of Discussions -->
-								<div id="discussions" class="tab-pane fade active show">
-									<div class="search">
-										<form class="form-inline position-relative">
-											<input type="search" class="form-control" id="conversations" placeholder="Search for conversations...">
-											<button type="button" class="btn btn-link loop"><i class="material-icons">search</i></button>
-										</form>
-										<button class="btn create" data-toggle="modal" data-target="#startnewchat"><i class="material-icons">create</i></button>
-									</div>
-									<div class="discussions">
-										<h1>Classrooms</h1>
-										<div class="list-group" id="chats" role="tablist">
-										</div>
-									</div>
-								</div>
-								<!-- End of Discussions -->
-								<!-- Start of Settings -->
-								<div class="tab-pane fade" id="settings">			
-									<div class="settings">
-										<div class="profile">
-											<img class="avatar-xl" src="dist/img/avatars/avatar-male-1.jpg" alt="avatar">
-											<h1><a href="#" class="loginPerson"></a></h1>
-											<span>Helena, Montana</span>
-										</div>
-										<div class="categories" id="accordionSettings">
-											<h1>Settings</h1>
-											<!-- Start of My Account -->
-											<div class="category">
-												<a href="#" class="title collapsed" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-													<i class="material-icons md-30 online">person_outline</i>
-													<div class="data">
-														<h5>My Account</h5>
-														<p>Update your profile details</p>
-													</div>
-													<i class="material-icons">keyboard_arrow_right</i>
-												</a>
-												<div class="collapse" id="collapseOne" aria-labelledby="headingOne" data-parent="#accordionSettings">
-													<div class="content">
-														<div class="upload">
-															<div class="data">
-																<img class="avatar-xl" src="dist/img/avatars/avatar-male-1.jpg" alt="image">
-																<label>
-																	<input type="file">
-																	<span class="btn button">Upload avatar</span>
-																</label>
-															</div>
-															<p>For best results, use an image at least 256px by 256px in either .jpg or .png format!</p>
-														</div>
-														<form>
-															<div class="parent">
-																<div class="field">
-																	<label for="Name">Name : <span class="loginPerson"></span></label>
-																</div>
-															</div>
-															<div class="field">
-																<label for="email">Email : <span id="email" style="text-transform: lowercase;"></span></label>
-															</div>
-															<div class="field">
-																<label for="type">Type : <span id="type"></span></label>
-															</div>
-															<div class="field">
-																<label for="location">Last Login : <span id="lastLogin"></span></label>
-															</div>
-															
-														</form>
-													</div>
-												</div>
-											</div>
-											<!-- End of My Account -->
-											<!-- Start of Logout -->
-											<div class="category">
-												<a href="sign-in.html" class="title collapsed">
-													<i class="material-icons md-30 online">power_settings_new</i>
-													<div class="data">
-														<h5>Power Off</h5>
-														<p>Log out of your account</p>
-													</div>
-													<i class="material-icons">keyboard_arrow_right</i>
-												</a>
-											</div>
-											<!-- End of Logout -->
-										</div>
-									</div>
-								</div>
-								<!-- End of Settings -->
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- End of Sidebar -->
-				<!-- Start of Create Chat -->
-				<div class="modal fade" id="startnewchat" tabindex="-1" role="dialog" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered" role="document">
-						<div class="requests">
-							<div class="title">
-								<h1>Create Room</h1>
-								<button type="button" class="btn" data-dismiss="modal" aria-label="Close"><i class="material-icons">close</i></button>
-							</div>
-							<div class="content">
-								<form>
-									<div class="form-group">
-										<label for="participant">Recipient:</label>
-										<select id="selectMembers" class="form-control" size="10" multiple style="height:200px;">
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="topic">Room Name:</label>
-										<input type="text" class="form-control" id="roomName" placeholder="What's the topic?" required>
-									</div>
-									<button type="button" onclick="createRoom()" class="btn button w-100">Create Room</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- End of Create Chat -->
-				<div class="main">
-					<div class="tab-content" id="nav-tabContent">
-						<!-- Start of Babble -->
-						<div class="babble tab-pane fade active show" id="list-chat" role="tabpanel" aria-labelledby="list-chat-list">
-							<!-- Start of Chat -->
-							<div class="chat" id="chat1">
-								<div class="top">
-									<div class="container">
-										<div class="col-md-12">
-											<div class="inside">
-												<a href="#"><img class="avatar-md" src="dist/img/avatars/avatar-female-5.jpg" data-toggle="tooltip" data-placement="top" title="Keith" alt="avatar"></a>
-												<div class="status">
-													<i class="material-icons online">fiber_manual_record</i>
-												</div>
-												<div class="data">
-													<h5><a href="#" id="currentChatName"></a></h5>
-													<span>Active now</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="content empty" id="checkEmptyChat">
-									<div class="container">
-										<div class="col-md-12">
-											<div class="no-messages">
-												<i class="material-icons md-48">forum</i>
-												<p>Seems people are shy to start the chat. Break the ice send the first message.</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="content" id="content">
-									<div class="container">
-										<div class="col-md-12" id="addMessagesHere">
-											<!-- <div class="message">
-												<img class="avatar-md" src="dist/img/avatars/avatar-female-5.jpg" data-toggle="tooltip" data-placement="top" title="Keith" alt="avatar">
-												<div class="text-main">
-													<div class="text-group">
-														<div class="text">
-															<p>We've got some killer ideas kicking about already.</p>
-														</div>
-													</div>
-													<span>09:46 AM</span>
-												</div>
-											</div>
-											<div class="message me">
-												<div class="text-main">
-													<div class="text-group me">
-														<div class="text me">
-															<p>Can't wait! How are we coming along with the client?</p>
-														</div>
-													</div>
-													<span>11:32 AM</span>
-												</div>
-											</div>
-											<div class="message">
-												<img class="avatar-md" src="dist/img/avatars/avatar-female-5.jpg" data-toggle="tooltip" data-placement="top" title="Keith" alt="avatar">
-												<div class="text-main">
-													<div class="text-group">
-														<div class="text">
-															<div class="attachment">
-																<button class="btn attach"><i class="material-icons md-18">insert_drive_file</i></button>
-																<div class="file">
-																	<h5><a href="#">Tenacy Agreement.pdf</a></h5>
-																	<span>24kb Document</span>
-																</div>
-															</div>
-														</div>
-													</div>
-													<span>11:07 PM</span>
-												</div>
-											</div>
-											<div class="message">
-												<img class="avatar-md" src="dist/img/avatars/avatar-female-5.jpg" data-toggle="tooltip" data-placement="top" title="Keith" alt="avatar">
-												<div class="text-main">
-													<div class="text-group">
-														<div class="text typing">
-															<div class="wave">
-																<span class="dot"></span>
-																<span class="dot"></span>
-																<span class="dot"></span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div> -->
+  <head>
+    <script>
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;
+      }
+    </script>
+    <meta charset="utf-8" />
+    <title>Class Room Application</title>
+    <meta name="description" content="#" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap core CSS -->
+    <link
+      href="dist/css/lib/bootstrap.min.css"
+      type="text/css"
+      rel="stylesheet"
+    />
+    <!-- Swipe core CSS -->
+    <link href="dist/css/swipe.min.css" type="text/css" rel="stylesheet" />
+    <!-- Favicon -->
+    <link href="dist/img/favicon.png" type="image/png" rel="icon" />
+    <script src="renderer.js"></script>
 
-										</div>
-									</div>
-								</div>
-								<div class="container">
-									<div class="col-md-12">
-										<div class="bottom">
-											<form class="position-relative w-100">
-												<textarea class="form-control" placeholder="Start typing for reply..." rows="1" id="message"></textarea>
-												<button class="btn emoticons"><i class="material-icons">insert_emoticon</i></button>
-												<button type="button" onclick = "sendMessage()"class="btn send"><i class="material-icons">send</i></button>
-											</form>
-											<label>
-												<input type="file">
-												<span class="btn attach d-sm-block d-none"><i class="material-icons">attach_file</i></span>
-											</label> 
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- End of Chat -->
-						</div>
-						<!-- End of Babble -->
-					</div>
-				</div>
-			</div> <!-- Layout -->
-		</main>
-		<!-- Bootstrap/Swipe core JavaScript
+    <style>
+      /* Center the loader */
+      #loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        width: 150px;
+        height: 150px;
+        margin: -75px 0 0 -75px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+      }
+
+      @-webkit-keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Add animation to "page content" */
+      .animate-bottom {
+        position: relative;
+        -webkit-animation-name: animatebottom;
+        -webkit-animation-duration: 1s;
+        animation-name: animatebottom;
+        animation-duration: 1s;
+      }
+
+      @-webkit-keyframes animatebottom {
+        from {
+          bottom: -100px;
+          opacity: 0;
+        }
+        to {
+          bottom: 0px;
+          opacity: 1;
+        }
+      }
+
+      @keyframes animatebottom {
+        from {
+          bottom: -100px;
+          opacity: 0;
+        }
+        to {
+          bottom: 0;
+          opacity: 1;
+        }
+      }
+
+      #mainBlock {
+        display: none;
+      }
+    </style>
+  </head>
+  <body onload="initialize()">
+    <div id="loader"></div>
+    <main id="mainBlock">
+      <div class="layout">
+        <!-- Start of Navigation -->
+        <div class="navigation">
+          <div class="container">
+            <div class="inside">
+              <div class="nav nav-tab menu">
+                <button class="btn">
+                  <img
+                    class="avatar-xl"
+                    src="dist/img/avatars/avatar-male-1.jpg"
+                    alt="avatar"
+                  />
+                </button>
+                <a href="#discussions" data-toggle="tab" class="active"
+                  ><i class="material-icons active">chat_bubble_outline</i></a
+                >
+                <a href="#settings" data-toggle="tab"
+                  ><i class="material-icons">settings</i></a
+                >
+                <button class="btn power" onclick="signOut();">
+                  <i class="material-icons">power_settings_new</i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End of Navigation -->
+        <!-- Start of Sidebar -->
+        <div class="sidebar" id="sidebar">
+          <div class="container">
+            <div class="col-md-12">
+              <div class="tab-content">
+                <!-- Start of Discussions -->
+                <div id="discussions" class="tab-pane fade active show">
+                  <div class="search">
+                    <form class="form-inline position-relative">
+                      <input
+                        type="search"
+                        class="form-control"
+                        id="conversations"
+                        placeholder="Search for conversations..."
+                      />
+                      <button type="button" class="btn btn-link loop">
+                        <i class="material-icons">search</i>
+                      </button>
+                    </form>
+                    <button
+                      class="btn create"
+                      data-toggle="modal"
+                      data-target="#startnewchat"
+                    >
+                      <i class="material-icons">create</i>
+                    </button>
+                  </div>
+                  <div class="discussions">
+                    <h1>Classrooms</h1>
+                    <div class="list-group" id="chats" role="tablist"></div>
+                  </div>
+                </div>
+                <!-- End of Discussions -->
+                <!-- Start of Settings -->
+                <div class="tab-pane fade" id="settings">
+                  <div class="settings">
+                    <div class="profile">
+                      <img
+                        class="avatar-xl"
+                        src="dist/img/avatars/avatar-male-1.jpg"
+                        alt="avatar"
+                      />
+                      <h1><a href="#" class="loginPerson"></a></h1>
+                      <span>Helena, Montana</span>
+                    </div>
+                    <div class="categories" id="accordionSettings">
+                      <h1>Settings</h1>
+                      <!-- Start of My Account -->
+                      <div class="category">
+                        <a
+                          href="#"
+                          class="title collapsed"
+                          id="headingOne"
+                          data-toggle="collapse"
+                          data-target="#collapseOne"
+                          aria-expanded="true"
+                          aria-controls="collapseOne"
+                        >
+                          <i class="material-icons md-30 online"
+                            >person_outline</i
+                          >
+                          <div class="data">
+                            <h5>My Account</h5>
+                            <p>Update your profile details</p>
+                          </div>
+                          <i class="material-icons">keyboard_arrow_right</i>
+                        </a>
+                        <div
+                          class="collapse"
+                          id="collapseOne"
+                          aria-labelledby="headingOne"
+                          data-parent="#accordionSettings"
+                        >
+                          <div class="content">
+                            <div class="upload">
+                              <div class="data">
+                                <img
+                                  class="avatar-xl"
+                                  src="dist/img/avatars/avatar-male-1.jpg"
+                                  alt="image"
+                                />
+                                <label>
+                                  <input type="file" />
+                                  <span class="btn button">Upload avatar</span>
+                                </label>
+                              </div>
+                              <p>
+                                For best results, use an image at least 256px by
+                                256px in either .jpg or .png format!
+                              </p>
+                            </div>
+                            <form>
+                              <div class="parent">
+                                <div class="field">
+                                  <label for="Name"
+                                    >Name : <span class="loginPerson"></span
+                                  ></label>
+                                </div>
+                              </div>
+                              <div class="field">
+                                <label for="email"
+                                  >Email :
+                                  <span
+                                    id="email"
+                                    style="text-transform: lowercase;"
+                                  ></span
+                                ></label>
+                              </div>
+                              <div class="field">
+                                <label for="type"
+                                  >Type : <span id="type"></span
+                                ></label>
+                              </div>
+                              <div class="field">
+                                <label for="location"
+                                  >Last Login : <span id="lastLogin"></span
+                                ></label>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- End of My Account -->
+                      <!-- Start of Logout -->
+                      <div class="category">
+                        <a href="sign-in.html" class="title collapsed">
+                          <i class="material-icons md-30 online"
+                            >power_settings_new</i
+                          >
+                          <div class="data">
+                            <h5>Power Off</h5>
+                            <p>Log out of your account</p>
+                          </div>
+                          <i class="material-icons">keyboard_arrow_right</i>
+                        </a>
+                      </div>
+                      <!-- End of Logout -->
+                    </div>
+                  </div>
+                </div>
+                <!-- End of Settings -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End of Sidebar -->
+        <!-- Start of Create Chat -->
+        <div
+          class="modal fade"
+          id="startnewchat"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="requests">
+              <div class="title">
+                <h1>Create Room</h1>
+                <button
+                  type="button"
+                  class="btn"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <i class="material-icons">close</i>
+                </button>
+              </div>
+              <div class="content">
+                <form>
+                  <div class="form-group">
+                    <label for="participant">Recipient:</label>
+                    <select
+                      id="selectMembers"
+                      class="form-control"
+                      size="10"
+                      multiple
+                      style="height: 200px;"
+                    >
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="topic">Room Name:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="roomName"
+                      placeholder="What's the topic?"
+                      required
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onclick="createRoom()"
+                    class="btn button w-100"
+                  >
+                    Create Room
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End of Create Chat -->
+        <div class="main">
+          <div class="tab-content" id="nav-tabContent">
+            <!-- Start of Babble -->
+            <div
+              class="babble tab-pane fade active show"
+              id="list-chat"
+              role="tabpanel"
+              aria-labelledby="list-chat-list"
+            >
+              <!-- Start of Chat -->
+              <div class="chat" id="chat1">
+                <div class="top">
+                  <div class="container">
+                    <div class="col-md-12">
+                      <div class="inside">
+                        <a href="#" onclick="showMembers()"
+                          ><img
+                            class="avatar-md"
+                            src="dist/img/avatars/download1.png"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            alt="avatar"
+                        /></a>
+                        <div class="status">
+                          <i class="material-icons online"
+                            >fiber_manual_record</i
+                          >
+                        </div>
+                        <div class="data">
+                          <h5>
+                            <a
+                              href="#"
+                              id="currentChatName"
+                              onclick="showMembers()"
+                            ></a>
+                          </h5>
+                          <span>Active Now</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="content empty" id="checkEmptyChat">
+                  <div class="container">
+                    <div class="col-md-12">
+                      <div class="no-messages">
+                        <i class="material-icons md-48">forum</i>
+                        <p>
+                          Seems people are shy to start the chat. Break the ice
+                          send the first message.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="content empty"
+                  id="showMembers"
+                  style="display: none;"
+                >
+                  <div class="container">
+                    <div class="col-md-12">
+                      <div class="no-messages">
+                        <i class="material-icons md-48">forum</i>
+                        <h1>Members</h1>
+                        <div
+                          class="list-group"
+                          id="showMembersList"
+                          role="tablist"
+                        >
+                          <a
+                            href="#list-chat"
+                            class="filterDiscussions all unread single active"
+                            id="list-chat-list"
+                            data-toggle="list"
+                            role="tab"
+                          >
+                            <img
+                              class="avatar-md"
+                              src="dist/img/avatars/download.jpg"
+                              data-toggle="tooltip"
+                              data-placement="top"
+                              alt="avatar"
+                            />
+                            <h5>Janette Dalton - Online</h5>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="content scrollingContainer" id="content">
+                  <div class="container">
+                    <div class="col-md-12" id="addMessagesHere"></div>
+                  </div>
+                  <div>.</div>
+                  <div>.</div>
+                  <div>.</div>
+                  <div id="scrollToView">.</div>
+                </div>
+                <div class="container">
+                  <div class="col-md-12">
+                    <div class="bottom">
+                      <form class="position-relative w-100">
+                        <textarea
+                          class="form-control"
+                          placeholder="Start typing for reply..."
+                          rows="1"
+                          id="message"
+                        ></textarea>
+                        <button class="btn emoticons" tabindex="-1">
+                          <i class="material-icons">insert_emoticon</i>
+                        </button>
+                        <button
+                          type="button"
+                          onclick="sendMessage()"
+                          class="btn send"
+                        >
+                          <i class="material-icons">send</i>
+                        </button>
+                      </form>
+                      <label>
+                        <input type="file" />
+                        <span class="btn attach d-sm-block d-none"
+                          ><i class="material-icons">attach_file</i></span
+                        >
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End of Chat -->
+            </div>
+            <!-- End of Babble -->
+          </div>
+        </div>
+      </div>
+      <!-- Layout -->
+    </main>
+    <!-- Bootstrap/Swipe core JavaScript
 		================================================== -->
-		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="dist/js/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		<script>window.jQuery || document.write('<script src="dist/js/vendor/jquery-slim.min.js"><\/script>')</script>
-		<script src="dist/js/vendor/popper.min.js"></script>
-		<script src="dist/js/swipe.min.js"></script>
-		<script src="dist/js/bootstrap.min.js"></script>
-		<script>
-
-			function scrollToBottom(el) {
-				if(el){
-					el.scrollTop = el.scrollHeight; 
-				} 
-			}
-			scrollToBottom(document.getElementById('content'));
-		</script>
-
-	</body>
-
-
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script
+      src="dist/js/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.jQuery ||
+        document.write(
+          '<script src="dist/js/vendor/jquery-slim.min.js"><\/script>'
+        );
+    </script>
+    <script src="dist/js/vendor/popper.min.js"></script>
+    <script src="dist/js/swipe.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script></script>
+  </body>
 </html>
-
-
-
-
-<!-- <div class="message"><img class="avatar-md" src="dist/img/avatars/avatar-female-5.jpg" data-toggle="tooltip" data-placement="top" title="Keith" alt="avatar"><div class="text-main"><div class="text-group"><div class="text"><p>We've got some killer ideas kicking about already.</p></div></div><span>09:46 AM</span></div></div> -->
-
-<!-- <div class="message me"><div class="text-main"><div class="text-group me"><div class="text me"><p>Can't wait! How are we coming along with the client?</p></div></div><span>11:32 AM</span></div></div> -->

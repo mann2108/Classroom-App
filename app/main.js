@@ -20,10 +20,12 @@ let mainWindow;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
+    width: 1010,
     height: 600,
+    minWidth: 1010,
+    minHeight: 600,
     show: false,
-    darkTheme: true,
+    icon: path.join(__dirname, "/Charusat2.png"),
   });
 
   // and load the index.html of the app.
