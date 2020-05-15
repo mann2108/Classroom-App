@@ -96,6 +96,7 @@ activateRoom = (room_name, room_id) => {
   document.getElementById("showMembers").style.display = "none";
   document.getElementById("content").style.display = "none";
   document.getElementById("addMessagesHere").innerHTML = "";
+  document.getElementById("containerChat").style.display = "block";
   currentChatId = room_id;
   currentChatName = room_name;
 
@@ -261,6 +262,12 @@ createRoom = () => {
       selected.push(option.value);
     }
   }
+
+  if(selected.length<=0){
+    ipcRenderer.send("message-dialog", "info", "No member selected!");
+    return;
+  }
+
   selected.push(loginUser.uid);
 
   var roomId = firebase.database().ref().child("rooms/").push().key;
@@ -336,6 +343,7 @@ showMembers = () => {
   console.log("showMembers");
   document.getElementById("showMembers").style.display = "block";
   document.getElementById("checkEmptyChat").style.display = "none";
+  document.getElementById("containerChat").style.display = "none";
   document.getElementById("content").style.display = "none";
 
   document.getElementById("showMembersList").innerHTML = "";
