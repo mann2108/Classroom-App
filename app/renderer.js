@@ -1,23 +1,35 @@
 // Your web app's Firebase configuration
 const { ipcRenderer, shell } = require("electron");
+const {getCurrentWindow, globalShortcut} = require('electron').remote;
 var firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
-const xlsxFile = require("read-excel-file/node");
-//var excel = require("excel4node");
-var admin = require("firebase-admin");
+// const xlsxFile = require("read-excel-file/node");
+// var excel = require("excel4node");
+// var admin = require("firebase-admin");
 
-var serviceAccount = require("./desktopchatapp-7d77c-firebase-adminsdk-1brzy-7e7ee7b250.json");
+// var serviceAccount = require("./desktopchatapp-7d77c-firebase-adminsdk-1brzy-7e7ee7b250.json");
+
+var reload = ()=>{
+  getCurrentWindow().reload()
+}
+
+globalShortcut.register('F5', reload);
+globalShortcut.register('CommandOrControl+R', reload);
+window.addEventListener('beforeunload', ()=>{
+  globalShortcut.unregister('F5', reload);
+  globalShortcut.unregister('CommandOrControl+R', reload);
+})
 
 var loginUser;
 var currentChatId;
 var currentChatName = "Please Select Room";
 var allUsers = [];
 var allUserEmail = [];
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://desktopchatapp-7d77c.firebaseio.com",
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://desktopchatapp-7d77c.firebaseio.com",
+// });
 
 var firebaseConfig = {
   apiKey: "AIzaSyA2wD-c_irTkrlUYU5ri7TE1IA4nGBdUmo",
