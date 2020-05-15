@@ -6,15 +6,20 @@
 	"scripts": {
 		"start": "electron ."
 	},
-	"repository": "https://github.com/electron/electron-quick-start",
+	"repository": "https://github.com/mann2108/Desktop-App",
 	"keywords": [
 		"Electron",
 		"quick",
 		"start",
 		"tutorial",
-		"demo"
+		"demo",
+		"charusat",
+		"chat",
+		"app",
+		"desktop",
+		"Desktop-App"
 	],
-	"author": "GitHub",
+	"author": "mann2108",
 	"license": "CC0-1.0",
 	"devDependencies": {
 		"@firebase/analytics": "^0.3.3",
