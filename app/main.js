@@ -5,6 +5,8 @@ const {
   ipcMain,
   dialog,
   nativeImage,
+  Menu,
+  MenuItem,
 } = require("electron");
 const path = require("path");
 const fs = require("fs");
@@ -16,6 +18,80 @@ require("electron-reload")(__dirname, {
 });
 
 let mainWindow;
+
+const template = [
+   {
+      label: 'Edit',
+      submenu: [
+         {
+            role: 'undo'
+         },
+         {
+            role: 'redo'
+         },
+         {
+            type: 'separator'
+         },
+         {
+            role: 'cut'
+         },
+         {
+            role: 'copy'
+         },
+         {
+            role: 'paste'
+         }
+      ]
+   },
+   
+   {
+      label: 'View',
+      submenu: [
+         {
+            role: 'reload'
+         },
+         {
+            type: 'separator'
+         },
+         {
+            role: 'resetzoom'
+         },
+         {
+            role: 'zoomin'
+         },
+         {
+            role: 'zoomout'
+         },
+         {
+            type: 'separator'
+         },
+         {
+            role: 'togglefullscreen'
+         }
+      ]
+   },
+   
+   {
+      role: 'window',
+      submenu: [
+         {
+            role: 'minimize'
+         },
+         {
+            role: 'close'
+         }
+      ]
+   },
+   
+   {
+      role: 'help',
+      submenu: [
+         {
+            label: 'Learn More'
+         }
+      ]
+   }
+]
 
 function createWindow() {
   // Create the browser window.
@@ -44,6 +120,10 @@ function createWindow() {
     mainWindow.show();
   });
 }
+
+
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
