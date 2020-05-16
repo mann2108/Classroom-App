@@ -32,14 +32,14 @@ var allUserEmail = [];
 // });
 
 var firebaseConfig = {
-  apiKey: "AIzaSyA2wD-c_irTkrlUYU5ri7TE1IA4nGBdUmo",
-  authDomain: "desktopchatapp-7d77c.firebaseapp.com",
-  databaseURL: "https://desktopchatapp-7d77c.firebaseio.com",
-  projectId: "desktopchatapp-7d77c",
-  storageBucket: "desktopchatapp-7d77c.appspot.com",
-  messagingSenderId: "993313812580",
-  appId: "1:993313812580:web:4231da3c52a7170f8cef71",
-  measurementId: "G-YQBMVSYM6P",
+  apiKey: "*******************************************",
+  authDomain: "*****************************************",
+  databaseURL: "*******************************************",
+  projectId: "*****************************************",
+  storageBucket: "*********************************************",
+  messagingSenderId: "*****************************************",
+  appId: "****************************************************",
+  measurementId: "*****************************************",
 };
 
 // Initialize Firebase
