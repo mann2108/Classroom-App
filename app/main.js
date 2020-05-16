@@ -11,12 +11,6 @@ const {
 const path = require("path");
 const fs = require("fs");
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-require("electron-reload")(__dirname, {
-  electron: path.join(process.cwd(), "node_modules", ".bin", "electron"),
-});
-
 let mainWindow;
 
 const template = [
