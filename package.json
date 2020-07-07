@@ -23,7 +23,7 @@
 	"license": "CC0-1.0",
 	"devDependencies": {
 		"@firebase/analytics": "^0.3.3",
-		"electron": "^3.0.4",
+		"electron": "^7.2.4",
 		"electron-online": "^1.0.0",
 		"electron-packager": "^14.2.1",
 		"electron-reload": "^1.2.5",
